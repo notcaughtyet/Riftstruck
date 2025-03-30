@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incremental Game</title>
+    <title>Incremental Story Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Incremental Game</h1>
+    <h1>Incremental Story Game</h1>
+    <p id="story">You wake up in a dimly lit room. The air is thick with mystery...</p>
     <p>Gold: <span id="gold">0</span></p>
-    <button onclick="earnGold()">Mine Gold</button>
-    <button onclick="buyWorker()">Buy Worker (Cost: <span id="workerCost">10</span> Gold)</button>
-    <p>Workers: <span id="workers">0</span> (Auto mines gold)</p>
+    <button onclick="earnGold()">Search for Clues (+1 Gold)</button>
+    <button onclick="advanceStory()">Advance Story (Cost: <span id="storyCost">5</span> Gold)</button>
+    <p id="progress">Progress: <span id="storyStage">1</span></p>
 
     <script src="script.js"></script>
 </body>
