@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incremental Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        button { font-size: 20px; padding: 10px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Incremental Game</h1>
+    <p>Gold: <span id="gold">0</span></p>
+    <button onclick="earnGold()">Mine Gold</button>
+    <button onclick="buyWorker()">Buy Worker (Cost: <span id="workerCost">10</span> Gold)</button>
+    <p>Workers: <span id="workers">0</span> (Auto mines gold)</p>
+
+    <script>
+        let gold = parseInt(localStorage.getItem("gold")) || 0;
+        let workers = parseInt(localStorage.getItem("workers")) || 0;
+        let workerCost = parseInt(localStorage.getItem("workerCost")) || 10;
+
+        function updateUI() {
+            document.getElementById("gold").innerText = gold;
+            document.getElementById("workers").innerText = workers;
+            document.getElementById("workerCost").innerText = workerCost;
+            localStorage.setItem("gold", gold);
+            localStorage.setItem("workers", workers);
+            localStorage.setItem("workerCost", workerCost);
+        }
+
+        function earnGold() {
+            gold += 1;
+            updateUI();
+        }
+
+        function buyWorker() {
+            if (gold >= workerCost) {
+                gold -= workerCost;
+                workers += 1;
+                workerCost = Math.ceil(workerCost * 1.5);
+                updateUI();
+            }
+        }
+
+        function autoMine() {
+            gold += workers;
+            updateUI();
+        }
+
+        setInterval(autoMine, 1000); // Workers mine gold every second
+        updateUI();
+    </script>
+</body>
+</html>
