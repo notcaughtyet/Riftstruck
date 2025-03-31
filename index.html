@@ -19,7 +19,9 @@
     <h2>Battle Arena</h2>
     <p>Enemy: <span id="enemyName">Wild Beast</span></p>
     <p>Enemy HP: <span id="enemyHP">30</span></p>
-    <button onclick="attackEnemy()">Attack</button>
+    <button onclick="attackEnemy('strike')">Strike (Basic Attack)</button>
+    <button onclick="attackEnemy('slash')">Slash (Strong vs Light Armor)</button>
+    <button onclick="attackEnemy('blast')">Blast (Strong vs Heavy Armor)</button>
     <button onclick="trainFighter()">Train Fighter (Cost: <span id="fighterCost">15</span> Gold)</button>
     <p>Fighters: <span id="fighters">0</span> (Auto-attacks enemies)</p>
 
