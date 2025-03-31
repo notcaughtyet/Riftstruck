@@ -1,45 +1,86 @@
-let gold = parseInt(localStorage.getItem("gold")) || 0;
-let workers = parseInt(localStorage.getItem("workers")) || 0;
-let workerCost = parseInt(localStorage.getItem("workerCost")) || 10;
-let lastTime = parseInt(localStorage.getItem("lastTime")) || Date.now();
-
-function updateUI() {
-    document.getElementById("gold").innerText = gold;
-    document.getElementById("workers").innerText = workers;
-    document.getElementById("workerCost").innerText = workerCost;
-    localStorage.setItem("gold", gold);
-    localStorage.setItem("workers", workers);
-    localStorage.setItem("workerCost", workerCost);
-    localStorage.setItem("lastTime", Date.now());
-}
+let gold = 0;
+let workers = 0;
+let fighters = 0;
+let storyStage = 1;
+let storyCost = 5;
+let workerCost = 10;
+let fighterCost = 15;
+let enemyHP = 30;
+let enemyName = "Wild Beast";
 
 function earnGold() {
-    gold += 1;
+    gold++;
     updateUI();
 }
 
 function buyWorker() {
     if (gold >= workerCost) {
         gold -= workerCost;
-        workers += 1;
-        workerCost = Math.ceil(workerCost * 1.5);
+        workers++;
+        workerCost = Math.floor(workerCost * 1.5);
+        setInterval(earnGold, 3000); // Workers auto-earn gold
         updateUI();
     }
 }
 
-function autoMine() {
-    gold += workers;
+function trainFighter() {
+    if (gold >= fighterCost) {
+        gold -= fighterCost;
+        fighters++;
+        fighterCost = Math.floor(fighterCost * 1.5);
+        setInterval(() => attackEnemy('strike', true), 5000); // Fighters auto-attack
+        updateUI();
+    }
+}
+
+function attackEnemy(move, auto = false) {
+    let damage = 0;
+    let weaknessMultiplier = 1;
+    
+    if (move === 'strike') damage = 5;
+    else if (move === 'slash') damage = 7;
+    else if (move === 'blast') damage = 10;
+    
+    if (enemyName === "Armored Beast" && move === 'slash') weaknessMultiplier = 1.5;
+    if (enemyName === "Heavy Golem" && move === 'blast') weaknessMultiplier = 2;
+    
+    damage *= weaknessMultiplier;
+    enemyHP -= damage;
+    
+    if (!auto) alert(`You used ${move}! It dealt ${damage} damage.`);
+    
+    if (enemyHP <= 0) {
+        gold += 20;
+        nextEnemy();
+    }
     updateUI();
 }
 
-function calculateOfflineEarnings() {
-    let currentTime = Date.now();
-    let elapsedTime = Math.floor((currentTime - lastTime) / 1000); // Seconds elapsed
-    let offlineEarnings = workers * elapsedTime;
-    gold += offlineEarnings;
+function nextEnemy() {
+    let enemies = ["Wild Beast", "Armored Beast", "Heavy Golem"];
+    enemyName = enemies[Math.floor(Math.random() * enemies.length)];
+    enemyHP = 30 + Math.floor(Math.random() * 20);
     updateUI();
 }
 
-calculateOfflineEarnings(); // Apply offline earnings on load
-setInterval(autoMine, 1000); // Workers mine gold every second
-updateUI();
+function advanceStory() {
+    if (gold >= storyCost) {
+        gold -= storyCost;
+        storyStage++;
+        storyCost = Math.floor(storyCost * 1.8);
+        document.getElementById("story").innerText = `Chapter ${storyStage}: A new mystery unfolds...`;
+        updateUI();
+    }
+}
+
+function updateUI() {
+    document.getElementById("gold").innerText = gold;
+    document.getElementById("workers").innerText = workers;
+    document.getElementById("fighters").innerText = fighters;
+    document.getElementById("storyStage").innerText = storyStage;
+    document.getElementById("storyCost").innerText = storyCost;
+    document.getElementById("workerCost").innerText = workerCost;
+    document.getElementById("fighterCost").innerText = fighterCost;
+    document.getElementById("enemyHP").innerText = enemyHP;
+    document.getElementById("enemyName").innerText = enemyName;
+}
