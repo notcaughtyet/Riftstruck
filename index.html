@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incremental Story Game</title>
+    <title>Incremental Story Battle Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Incremental Story Game</h1>
+    <h1>Incremental Story Battle Game</h1>
     <p id="story">You wake up in a dimly lit room. The air is thick with mystery...</p>
     <p>Gold: <span id="gold">0</span></p>
     <button onclick="earnGold()">Search for Clues (+1 Gold)</button>
@@ -15,6 +15,13 @@
     <p id="progress">Progress: <span id="storyStage">1</span></p>
     <button onclick="buyWorker()">Hire Assistant (Cost: <span id="workerCost">10</span> Gold)</button>
     <p>Assistants: <span id="workers">0</span> (Auto-searches for clues)</p>
+    
+    <h2>Battle Arena</h2>
+    <p>Enemy: <span id="enemyName">Wild Beast</span></p>
+    <p>Enemy HP: <span id="enemyHP">30</span></p>
+    <button onclick="attackEnemy()">Attack</button>
+    <button onclick="trainFighter()">Train Fighter (Cost: <span id="fighterCost">15</span> Gold)</button>
+    <p>Fighters: <span id="fighters">0</span> (Auto-attacks enemies)</p>
 
     <script src="script.js"></script>
 </body>
