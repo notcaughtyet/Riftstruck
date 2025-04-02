@@ -8,6 +8,44 @@ let fighterCost = 15;
 let enemyHP = 30;
 let enemyName = "Wild Beast";
 
+function saveGame() {
+    const gameState = {
+        gold: game.gold,
+        workers: game.workers,
+        fighters: game.fighters,
+        storyStage: game.storyStage,
+        storyCost: game.storyCost,
+        workerCost: game.workerCost,
+        fighterCost: game.fighterCost,
+        enemyName: game.enemy.name,
+        enemyHP: game.enemy.hp
+    };
+    localStorage.setItem("gameState", JSON.stringify(gameState));
+}
+setInterval(saveGame, 5000); // Save every 5 seconds
+
+function loadGame() {
+    const savedState = localStorage.getItem("gameState");
+    if (savedState) {
+        const data = JSON.parse(savedState);
+        game.gold = data.gold;
+        game.workers = data.workers;
+        game.fighters = data.fighters;
+        game.storyStage = data.storyStage;
+        game.storyCost = data.storyCost;
+        game.workerCost = data.workerCost;
+        game.fighterCost = data.fighterCost;
+        game.enemy = new Enemy(data.enemyName, data.enemyHP);
+    }
+    UI.update();
+}
+window.onload = loadGame;
+
+function resetGame() {
+    localStorage.removeItem("gameState");
+    location.reload();
+}
+
 function earnGold() {
     gold++;
     updateUI();
