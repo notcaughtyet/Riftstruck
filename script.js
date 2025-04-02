@@ -122,3 +122,83 @@ function updateUI() {
     document.getElementById("enemyHP").innerText = enemyHP;
     document.getElementById("enemyName").innerText = enemyName;
 }
+
+class Enemy {
+    constructor(name, hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+    takeDamage(amount) {
+        this.hp -= amount;
+        if (this.hp <= 0) checkChapterProgress();
+    }
+}
+
+const chapters = [
+    { id: 1, title: "Prologue: The Awakening", description: "You wake up in a desolate battlefield, with no memory of how you got here.", mainCharacter: "Kai, the Wandering Soldier", scene: "battlefield", availableMoves: ["Strike", "Block", "Charge"], enemies: [{ name: "Lost Warrior", hp: 20, weakness: "Strike" }] },
+    { id: 2, title: "Chapter 1: The Hidden City", description: "You arrive at a hidden city where secrets of the past await.", mainCharacter: "Lena, the Rebel Leader", scene: "hidden-city", availableMoves: ["Slash", "Fireball", "Dodge"], enemies: [{ name: "City Guard", hp: 25, weakness: "Fireball" }] }
+];
+
+class Game {
+    constructor() {
+        this.currentChapterIndex = 0;
+        this.gold = 0;
+        this.loadChapter();
+    }
+    loadChapter() {
+        const chapter = chapters[this.currentChapterIndex];
+        this.currentChapter = chapter;
+        UI.updateChapter(chapter);
+    }
+    advanceChapter() {
+        if (this.currentChapterIndex < chapters.length - 1) {
+            this.currentChapterIndex++;
+            this.loadChapter();
+        } else {
+            alert("You've reached the end of the current story!");
+        }
+    }
+}
+
+const UI = {
+    updateChapter(chapter) {
+        document.getElementById("chapterTitle").innerText = chapter.title;
+        document.getElementById("sceneDescription").innerText = chapter.description;
+        document.getElementById("mainCharacter").innerText = "Playing as: " + chapter.mainCharacter;
+        document.body.className = chapter.scene;
+        const movesContainer = document.getElementById("battle-buttons");
+        movesContainer.innerHTML = "";
+        chapter.availableMoves.forEach(move => {
+            let button = document.createElement("button");
+            button.innerText = move;
+            button.onclick = () => game.enemy.takeDamage(move === "Fireball" ? 10 : 5);
+            movesContainer.appendChild(button);
+        });
+        const enemy = chapter.enemies[0];
+        game.enemy = new Enemy(enemy.name, enemy.hp);
+    }
+};
+
+function checkChapterProgress() {
+    if (game.enemy.hp <= 0 && game.currentChapterIndex < chapters.length - 1) {
+        game.advanceChapter();
+    }
+}
+
+function saveGame() {
+    const gameState = { currentChapterIndex: game.currentChapterIndex, gold: game.gold };
+    localStorage.setItem("gameState", JSON.stringify(gameState));
+}
+function loadGame() {
+    const savedState = localStorage.getItem("gameState");
+    if (savedState) {
+        const data = JSON.parse(savedState);
+        game.currentChapterIndex = data.currentChapterIndex;
+        game.gold = data.gold;
+        game.loadChapter();
+    }
+}
+window.onload = loadGame;
+
+const game = new Game();
+
