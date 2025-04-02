@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incremental Story Battle Game</title>
+    <title>Riftstruck</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Incremental Story Battle Game</h1>
-    <p id="story">You wake up in a dimly lit room. The air is thick with mystery...</p>
+    <h1 id="chapterTitle">Prologue: The Awakening</h1>
+    <p id="sceneDescription">You wake up in a desolate battlefield, with no memory of how you got here.</p>
+    <p id="mainCharacter">Playing as: Kai, the Wandering Soldier</p>
+    <div id="battle-buttons"></div>
+    <button onclick="game.advanceChapter()">Next Chapter</button>
+    <script src="script.js"></script>
     <p>Gold: <span id="gold">0</span></p>
     <button onclick="earnGold()">Search for Clues (+1 Gold)</button>
     <button onclick="advanceStory()">Advance Story (Cost: <span id="storyCost">5</span> Gold)</button>
@@ -27,7 +31,7 @@
 
     <h3>Options</h3>
     <button onclick="resetGame()">Reset Game</button>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
